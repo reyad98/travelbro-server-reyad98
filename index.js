@@ -5,7 +5,7 @@ const cors = require('cors');
 require ('dotenv').config();
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT|| 8000;
 
 // id: travel98
 // pass: mXg4NKFC5piV2i43
@@ -36,7 +36,7 @@ async function run (){
             const query = {_id: ObjectId(id)};
             const service =  await servicesCollection.findOne(query);
             res.json(service);
-        })
+        });
         
        //post api
        app.post('/services',async(req,res)=>{
@@ -52,6 +52,13 @@ async function run (){
            const order = req.body;
            console.log('order',order);
            res.send('order procccsed')
+       })
+       //Delet api
+       app.delete('/services/:id',async(req,res)=>{
+           const id = req.params.id;
+           const qurey = {_id:ObjectId(id)};
+           const result = await servicesCollection.deleteOne(qurey);
+           res.json(result);
        })
   }
   finally{
